@@ -4,13 +4,13 @@
   "icon": "icon.png",
   "commands": [
     {
-      "name": "to-scss-var",
+      "name": "Fill to SCSS variable",
       "identifier": "to-scss-var-identifier",
       "script": "./to-scss-var.js"
     }
   ],
   "menu": {
-    "title": "to-scss-var",
+    "title": "Fill to SCSS variable",
     "items": [
       "to-scss-var-identifier"
     ]
