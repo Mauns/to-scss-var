@@ -1,0 +1,25 @@
+{
+  "compatibleVersion": 3,
+  "bundleVersion": 1,
+  "icon": "icon.png",
+  "commands": [
+    {
+      "name": "to-scss-var",
+      "identifier": "to-scss-var-identifier",
+      "script": "to-scss-var.js"
+    }
+  ],
+  "menu": {
+    "title": "to-scss-var",
+    "items": [
+      "to-scss-var-identifier"
+    ]
+  },
+  "version": "0.1.0",
+  "name": "to-scss-var",
+  "identifier": "to-scss-var",
+  "disableCocoaScriptPreprocessor": true,
+  "appcast": "https://raw.githubusercontent.com//master/.appcast.xml",
+  "author": "Mauns",
+  "authorEmail": "maunsbruns@gmx.de"
+}
