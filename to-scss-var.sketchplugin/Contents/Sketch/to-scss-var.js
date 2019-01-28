@@ -502,7 +502,7 @@ var fs = __webpack_require__(/*! @skpm/fs */ "./node_modules/@skpm/fs/index.js")
           styleName = styleName.split("/");
           splittedName = styleName;
           styleName = styleName.length > 1 ? styleName[styleName.length - 1] : styleName;
-          splittedName.pop();
+          splittedName.length > 1 && splittedName.pop();
           splittedName = splittedName.join("/");
           var obj = {};
           obj = {

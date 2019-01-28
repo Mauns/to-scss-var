@@ -36,7 +36,7 @@ export default function() {
         splittedName = styleName
         styleName = styleName.length > 1 ? styleName[styleName.length - 1] : styleName
 
-        splittedName.pop()
+        splittedName.length > 1 && splittedName.pop()
         splittedName = splittedName.join("/")
 
         let obj = {}
