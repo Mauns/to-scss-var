@@ -488,25 +488,25 @@ var fs = __webpack_require__(/*! @skpm/fs */ "./node_modules/@skpm/fs/index.js")
   var ColorArray = [];
   var NameList = []; // Iterate over Layerstyles
 
-  layerStyles.forEach(function (style, i) {
+  layerStyles.forEach(function (style, i, arr) {
     var styleName = style.name;
     var splittedName;
-    var fills = style.style.fills; // Iterate over fills of styles and find the enabled ones
+    var fills = style.style.fills; // parse name 
+
+    styleName = styleName.toLowerCase();
+    styleName = styleName.split("/");
+    splittedName = styleName;
+    styleName = styleName.length > 1 ? styleName[styleName.length - 1] : styleName;
+    splittedName.length > 1 && splittedName.pop();
+    splittedName = splittedName.join("/"); // Iterate over fills of styles and find the enabled ones
 
     fills.forEach(function (fill, i) {
       if (fill.enabled === true) {
         if (fill.type == 'Fill') {
-          var color = fill.color; // parse name 
-
-          styleName = styleName.toLowerCase();
-          styleName = styleName.split("/");
-          splittedName = styleName;
-          styleName = styleName.length > 1 ? styleName[styleName.length - 1] : styleName;
-          splittedName.length > 1 && splittedName.pop();
-          splittedName = splittedName.join("/");
+          var color = fill.color;
           var obj = {};
           obj = {
-            path: splittedName,
+            key: splittedName,
             name: styleName,
             color: color
           };
@@ -515,30 +515,23 @@ var fs = __webpack_require__(/*! @skpm/fs */ "./node_modules/@skpm/fs/index.js")
       }
     });
   });
-  colors.forEach(function (d, i) {
-    var string = "// ".concat(d.path, "\n$").concat(d.name, ": ").concat(d.color, ";\n");
+  colors.forEach(function (d, i, arr) {
+    var string = "// ".concat(d.key, "\n$").concat(d.name, ": ").concat(d.color, ";\n");
     return ColorArray.push(string);
   });
   ColorArray.sort();
   ColorArray = ColorArray.toString();
   ColorArray = ColorArray.split(",");
-  colors.forEach(function (d, i) {
-    if (ColorArray[i].includes("// ".concat(d.path))) {
-      return ColorArray[i].replace("// ".concat(d.path), 'lol');
-    }
-  });
   ColorArray = ColorArray.join("\n");
   var fileContent = ColorArray;
-  fs.writeFileSync("/Users/marvinbruns/Desktop/fills.scss", fileContent);
-  sketch__WEBPACK_IMPORTED_MODULE_0___default.a.UI.message("generated scss file. Take a look at your desktop.");
-});
 
-function uniq(a) {
-  var seen = {};
-  return a.filter(function (item) {
-    seen.hasOwnProperty(item) ? false : seen[item] = true;
-  });
-}
+  try {
+    fs.writeFileSync("/Users/marvinbruns/Desktop/fills.scss", fileContent);
+    sketch__WEBPACK_IMPORTED_MODULE_0___default.a.UI.message("👍 Generated scss file. Saved as „fills.scss“ on your desktop.");
+  } catch (err) {
+    sketch__WEBPACK_IMPORTED_MODULE_0___default.a.UI.message("\uD83D\uDC4E ".concat(err));
+  }
+});
 
 /***/ }),
 

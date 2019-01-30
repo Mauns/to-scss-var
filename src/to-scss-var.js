@@ -17,11 +17,20 @@ export default function() {
   let   NameList = []
 
   // Iterate over Layerstyles
-  layerStyles.forEach((style, i) => {
+  layerStyles.forEach((style, i, arr) => {
 
     let styleName = style.name
     let splittedName
     let fills = style.style.fills
+
+    // parse name 
+    styleName = styleName.toLowerCase()
+    styleName = styleName.split("/")
+    splittedName = styleName
+    styleName = styleName.length > 1 ? styleName[styleName.length - 1] : styleName
+
+    splittedName.length > 1 && splittedName.pop()
+    splittedName = splittedName.join("/")
 
     // Iterate over fills of styles and find the enabled ones
     fills.forEach((fill, i) => {
@@ -30,18 +39,9 @@ export default function() {
 
         let color = fill.color
 
-        // parse name 
-        styleName = styleName.toLowerCase()
-        styleName = styleName.split("/")
-        splittedName = styleName
-        styleName = styleName.length > 1 ? styleName[styleName.length - 1] : styleName
-
-        splittedName.length > 1 && splittedName.pop()
-        splittedName = splittedName.join("/")
-
         let obj = {}
             obj = {
-              path: splittedName,
+              key: splittedName,
               name: styleName,
               color
             }
@@ -52,36 +52,25 @@ export default function() {
     })
   })
 
-  colors.forEach((d, i) => {
+  colors.forEach((d, i, arr) => {
     
-    let string = `// ${d.path}\n$${d.name}: ${d.color};\n`
-    
+    let string = `// ${d.key}\n$${d.name}: ${d.color};\n`
+
     return ColorArray.push(string)
   })
 
-  
   ColorArray.sort()
   ColorArray = ColorArray.toString()
   ColorArray = ColorArray.split(",")
-  
-  colors.forEach((d, i) => {
-    if (ColorArray[i].includes(`// ${d.path}`)) {
-      return ColorArray[i].replace(`// ${d.path}`, 'lol')
-    }
-  })
-
   ColorArray = ColorArray.join("\n")
   
   let fileContent = ColorArray
 
-  fs.writeFileSync("/Users/marvinbruns/Desktop/fills.scss", fileContent)
+  try {
+    fs.writeFileSync("/Users/marvinbruns/Desktop/fills.scss", fileContent)
+    sketch.UI.message("👍 Generated scss file. Saved as „fills.scss“ on your desktop.")
+  } catch (err) {
+    sketch.UI.message(`👎 ${err}`)  
+  }
 
-  sketch.UI.message("generated scss file. Take a look at your desktop.")
-}
-
-function uniq(a) {
-  let seen = {}
-  return a.filter(function (item) {
-    seen.hasOwnProperty(item) ? false : (seen[item] = true)
-  })
 }
